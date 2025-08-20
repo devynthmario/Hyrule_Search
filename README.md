@@ -17,10 +17,10 @@ Featuring a **Triforce logo**, custom background, and functional search that red
 ## 🖼 Preview
 
 ### 🔹 Home Page
-![Hyrule Search - Home] <img width="1915" height="941" alt="image" src="https://github.com/user-attachments/assets/33c51a08-51ff-4672-bc8f-17fbf86361f9" />
+<img width="1915" height="941" alt="image" src="https://github.com/user-attachments/assets/33c51a08-51ff-4672-bc8f-17fbf86361f9" />
 
 ### 🔹 Images Search
-![Hyrule Search - Images] <img width="1916" height="948" alt="image" src="https://github.com/user-attachments/assets/2f062ee6-7498-428f-be74-fa9a1d82420c" />
+<img width="1916" height="948" alt="image" src="https://github.com/user-attachments/assets/2f062ee6-7498-428f-be74-fa9a1d82420c" />
 
 ---
 
