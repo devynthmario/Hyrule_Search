@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Hyrule Search</title>
+    <link rel="icon" href="Hyrule_Search.png" />
+    <link rel="stylesheet" href="search.css" />
+  </head>
+  <body>
+    <!-- Top bar visible on all views -->
+    <header class="topbar" aria-label="Top navigation bar">
+      <div class="topbar-inner">
+        <div class="brand">
+          <svg class="logo-small" viewBox="0 0 64 64" role="img" aria-label="Triforce logo">
+            <g fill="#f2d14e" stroke="#b89128" stroke-width="2" stroke-linejoin="round">
+              <polygon points="32,6 20,28 44,28"></polygon>
+              <polygon points="20,30 8,52 32,52"></polygon>
+              <polygon points="44,30 32,52 56,52"></polygon>
+            </g>
+          </svg>
+          <div class="name">Hyrule Search</div>
+        </div>
+        <div class="header-search" role="search">
+          <form id="headerSearchForm" class="searchbar" aria-label="Search form (header)">
+            <!-- Simple search icon (SVG inline to avoid external dependencies) -->
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M15.5 14h-.79l-.28-.27a6.471 6.471 0 0 0 1.57-4.23C16 6.01 12.99 3 9.5 3S3 6.01 3 9.5 6.01 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+            <input id="headerSearchInput" type="text" name="q" autocomplete="off" placeholder="Search Google..." aria-label="Search" />
+            <button type="submit" class="search-btn" aria-label="Search">Search</button>
+          </form>
+        </div>
+        <nav class="right-links" aria-label="Utility links">
+          <a href="#" id="navAll">All</a>
+          <a href="#" id="navImages">Images</a>
+          <a href="#" aria-disabled="true" style="opacity:.6; cursor: default;">Settings</a>
+        </nav>
+      </div>
+      <!-- Tabs appear as part of the top bar to mimic Google results tabs -->
+      <div class="tabs" role="tablist" aria-label="Result category tabs">
+        <div id="tabAll" class="tab active" role="tab" aria-selected="true" tabindex="0">All</div>
+        <div id="tabImages" class="tab" role="tab" aria-selected="false" tabindex="0">Images</div>
+      </div>
+    </header>
+
+    <main>
+      <!-- Home (landing) view -->
+      <section id="homeView" class="home" aria-label="Home view">
+        <div class="home-inner">
+          <img class="logo-large" src="Hyrule_Search.png" alt="Hyrule Search" />
+          <form id="homeSearchForm" class="searchbar" aria-label="Search form (home)">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M15.5 14h-.79l-.28-.27a6.471 6.471 0 0 0 1.57-4.23C16 6.01 12.99 3 9.5 3S3 6.01 3 9.5 6.01 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+            <input id="homeSearchInput" type="text" name="q" autocomplete="off" placeholder="Search Google..." aria-label="Search" />
+            <button type="submit" class="search-btn" aria-label="Search">Search</button>
+          </form>
+          <div class="search-actions">
+            <button id="luckyBtn" class="ghost-btn" type="button" title="Random example search">I'm Feeling Adventurous</button>
+            <button id="imagesShortcut" class="ghost-btn" type="button" title="Open Images view">Images</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Results view (All / Images) -->
+      <section id="resultsView" class="results-wrap" aria-label="Results view" style="display:none;">
+        <!-- This container is intentionally left hidden because real results open on Google -->
+      </section>
+    </main>
+
+    <footer>
+      Made with HTML, CSS and vanilla JS — background and logo provided by you.
+    </footer>
+
+    <script>
+      // Helper to select elements
+      const $ = (sel) => document.querySelector(sel);
+
+      // Key DOM references
+      const homeView = $('#homeView');
+      const resultsView = $('#resultsView');
+
+      const tabAll = $('#tabAll');
+      const tabImages = $('#tabImages');
+      const navAll = $('#navAll');
+      const navImages = $('#navImages');
+
+      const homeSearchForm = $('#homeSearchForm');
+      const headerSearchForm = $('#headerSearchForm');
+      const homeSearchInput = $('#homeSearchInput');
+      const headerSearchInput = $('#headerSearchInput');
+      const luckyBtn = $('#luckyBtn');
+      const imagesShortcut = $('#imagesShortcut');
+
+      // No local rendering — we open Google directly
+
+      // View/state helpers
+      function showHome() {
+        homeView.style.display = 'grid';
+        resultsView.style.display = 'none';
+        tabAll.classList.add('active');
+        tabImages.classList.remove('active');
+      }
+
+      function showResults() {
+        // Keep for layout completeness; results open on Google in a new tab
+        homeView.style.display = 'none';
+        resultsView.style.display = 'none';
+      }
+
+      function performSearch(queryText, target = 'all') {
+        if (!queryText || !queryText.trim()) return;
+        const q = encodeURIComponent(queryText.trim());
+        const url = target === 'images'
+          ? `https://www.google.com/search?tbm=isch&q=${q}`
+          : `https://www.google.com/search?q=${q}`;
+        window.open(url, '_blank');
+        showResults();
+      }
+
+      // Wire up events
+      homeSearchForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        performSearch(homeSearchInput.value, 'all');
+      });
+      headerSearchForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const qText = headerSearchInput.value;
+        if (tabImages.classList.contains('active')) {
+          goImagesWithQuery(qText);
+        } else {
+          performSearch(qText, 'all');
+        }
+      });
+      luckyBtn.addEventListener('click', () => {
+        // Random example terms; adjust to taste
+        const examples = ['Master Sword', 'Hyrule Castle', 'Sheikah Slate', 'Korok Seed', 'Zora Domain'];
+        const pick = examples[Math.floor(Math.random() * examples.length)];
+        homeSearchInput.value = pick;
+        performSearch(pick, 'all');
+      });
+      imagesShortcut.addEventListener('click', () => {
+        const qText = homeSearchInput.value || 'Hyrule';
+        goImagesWithQuery(qText);
+      });
+      // Tabs + top nav
+      function goAll() { showResults('all'); }
+      function goImagesWithQuery(qText) {
+        const q = encodeURIComponent((qText || '').trim());
+        const url = q ? `images.html?q=${q}` : 'images.html';
+        window.location.href = url;
+      }
+      tabAll.addEventListener('click', goAll);
+      tabImages.addEventListener('click', () => {
+        const qText = headerSearchInput.value || homeSearchInput.value || '';
+        goImagesWithQuery(qText);
+      });
+      navAll.addEventListener('click', (e) => { e.preventDefault(); goAll(); });
+      navImages.addEventListener('click', (e) => {
+        e.preventDefault();
+        const qText = headerSearchInput.value || homeSearchInput.value || '';
+        goImagesWithQuery(qText);
+      });
+
+      // Initialize: start on Home; focus the main input for convenience
+      showHome();
+      setTimeout(() => { try { homeSearchInput.focus(); } catch (_) {} }, 100);
+    </script>
+  </body>
+  </html>
+
+
