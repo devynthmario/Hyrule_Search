@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Hyrule Search — Images</title>
+    <link rel="icon" href="Hyrule_Search.png" />
+    <link rel="stylesheet" href="search.css" />
+  </head>
+  <body>
+    <header class="topbar" aria-label="Top navigation bar">
+      <div class="topbar-inner">
+        <div class="brand">
+          <svg class="logo-small" viewBox="0 0 64 64" role="img" aria-label="Triforce logo">
+            <g fill="#f2d14e" stroke="#b89128" stroke-width="2" stroke-linejoin="round">
+              <polygon points="32,6 20,28 44,28"></polygon>
+              <polygon points="20,30 8,52 32,52"></polygon>
+              <polygon points="44,30 32,52 56,52"></polygon>
+            </g>
+          </svg>
+          <div class="name">Hyrule Search</div>
+        </div>
+        <div class="header-search" role="search">
+          <form id="imagesSearchForm" class="searchbar" aria-label="Search form (images)">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M15.5 14h-.79l-.28-.27a6.471 6.471 0 0 0 1.57-4.23C16 6.01 12.99 3 9.5 3S3 6.01 3 9.5 6.01 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+            <input id="imagesSearchInput" type="text" name="q" autocomplete="off" placeholder="Search Google Images..." aria-label="Search images" />
+            <button type="submit" class="search-btn" aria-label="Search">Images</button>
+          </form>
+        </div>
+        <nav class="right-links" aria-label="Utility links" style="color:var(--text-secondary); font-size:14px; display:flex; gap:14px;">
+          <a href="search.html" style="color:#9bb5ff; text-decoration:none;">All</a>
+          <span style="opacity:.8;">Images</span>
+        </nav>
+      </div>
+    </header>
+    <main>
+      <div class="hint">Results will open in a new tab on Google Images.</div>
+    </main>
+
+    <script>
+      // Read query from URL and auto-run the images search
+      function getParam(name) {
+        const params = new URLSearchParams(window.location.search);
+        return params.get(name) || '';
+      }
+      const form = document.getElementById('imagesSearchForm');
+      const input = document.getElementById('imagesSearchInput');
+
+      function openGoogleImages(qText) {
+        if (!qText || !qText.trim()) return;
+        const q = encodeURIComponent(qText.trim());
+        const url = `https://www.google.com/search?tbm=isch&q=${q}`;
+        window.open(url, '_blank');
+      }
+
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        openGoogleImages(input.value);
+      });
+
+      const initial = getParam('q');
+      if (initial) {
+        input.value = decodeURIComponent(initial);
+        openGoogleImages(input.value);
+      } else {
+        // Focus for convenience
+        setTimeout(() => { try { input.focus(); } catch (_) {} }, 100);
+      }
+    </script>
+  </body>
+  </html>
+
+
