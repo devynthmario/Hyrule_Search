@@ -49,5 +49,4 @@ Inspired by the Legend of Zelda series and Google’s minimal homepage.
 
 
 
-<img width="1916" height="948" alt="image" src="https://github.com/user-attachments/assets/f2cf3874-35cc-4e8a-a8e9-1aaef3723982" />
 
